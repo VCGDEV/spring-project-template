@@ -54,20 +54,24 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.security.oauth:spring-security-oauth2'
 	compile 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.3.RELEASE'
-	compileOnly 'org.projectlombok:lombok'
+	
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
-	implementation "org.mapstruct:mapstruct:1.3.1.Final"
+	
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'    
 	compile 'com.vcgdev.common:common-rest:0.0.2'
 
-    
-    annotationProcessor "org.mapstruct:mapstruct-processor:1.3.1.Final"
+	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+    
+	implementation "org.mapstruct:mapstruct:1.3.1.Final"
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.3.1.Final"
+	
 
 	// test DB
 	runtimeOnly 'com.h2database:h2'
 
+	testAnnotationProcessor 'org.projectlombok:lombok'   
 	testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.3.1.Final"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
@@ -75,4 +79,15 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+
+genRest{
+	basePackage = "com.vcgdev.demo"
+	servicePackage = "service"
+	repositoryPackage = "persistence"
+	entityPackage = "domain"
+	resourcePackage = "rest"
+	dtoPackage = "dto"
+	mapperPackage = "mappers"
 }
