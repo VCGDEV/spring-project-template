@@ -7,10 +7,14 @@ on:
   push:
     branches: 
       - master
+      - develop
   pull_request:
     branches: 
       - master
       - develop
+env:
+  artifactory_user: ${{ secrets.ARTIFACTORY_USER }}
+  artifactory_password: ${{ secrets.ARTIFACTORY_PWD }}
 
 jobs:
   build:
@@ -26,7 +30,34 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      env:
-              artifactory_user: ${{ secrets.ARTIFACTORY_USER }}
-              artifactory_password: ${{ secrets.ARTIFACTORY_PWD }}
       run: ./gradlew clean build jacocoTestCoverageVerification
+
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['java']
+    steps:
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11.0.3
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Grant execute permission for gradle
+        run: chmod +x gradlew
+      - name: Build
+        run: ./gradlew clean build 
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
+
