@@ -20,6 +20,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'net.ltgt.apt' version '0.21'
+	id 'jacoco'
 }
 
 apply plugin: 'com.vcgdev.plugin'
@@ -90,4 +91,60 @@ genRest{
 	resourcePackage = "rest"
 	dtoPackage = "dto"
 	mapperPackage = "mappers"
+}
+
+// exclude from report
+def jacocoExclude = ['com/vcgdev/demo/domain/**',
+					 'com/vcgdev/demo/config/**',
+					 'com/vcgdev/demo/SpringProjectTemplateApplication**']
+
+// exclude from verification
+def jacocoExcludeVerification = ['com.vcgdev.demo.domain.**',
+								 'com.vcgdev.demo.config.**',
+								 'com.vcgdev.demo.SpringProjectTemplateApplication**']
+jacoco {
+	toolVersion = '0.8.5'
+	reportsDir = file('$buildDir/reports/jacoco')
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled false
+		csv.enabled false
+		html.destination file("${buildDir}/reports/jacoco")
+	}
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it,
+					exclude: jacocoExclude
+			)
+		}))
+	}
+}
+
+jacocoTestCoverageVerification {	
+	violationRules {
+
+		rule {
+			element = 'CLASS'
+			includes = ['com.vcgdev.demo.*']
+			excludes = jacocoExcludeVerification
+			limit {
+				counter = 'LINE'
+				value = 'COVEREDRATIO'
+				minimum = 0.9
+			}
+		}
+		
+		rule {
+			element = 'CLASS'
+			includes = ['com.vcgdev.demo*']
+			excludes = jacocoExcludeVerification
+			limit {
+				counter = 'BRANCH'
+				value = 'COVEREDRATIO'
+				minimum = 0.9
+			}
+		}
+	}
 }
