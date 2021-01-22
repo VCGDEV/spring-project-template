@@ -23,6 +23,10 @@ plugins {
 	id 'jacoco'
 }
 
+ext {
+    karateVersion = '0.9.6'
+}
+
 apply plugin: 'com.vcgdev.plugin'
 apply plugin: 'net.ltgt.apt-idea'
 apply plugin: 'net.ltgt.apt-eclipse'
@@ -48,6 +52,25 @@ repositories {
     }
 }
 
+sourceSets {
+	integrationTest {
+		java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integrationTest/java')
+        }
+		resources {
+            srcDir file('src/integrationTest/java')
+            exclude '**/*.java'
+        }
+	}
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
@@ -68,6 +91,11 @@ dependencies {
 	implementation "org.mapstruct:mapstruct:1.3.1.Final"
     annotationProcessor "org.mapstruct:mapstruct-processor:1.3.1.Final"
 	
+	//karate 
+	integrationTestCompile "com.intuit.karate:karate-junit5:${karateVersion}"
+    integrationTestCompile "com.intuit.karate:karate-apache:${karateVersion}"
+    integrationTestCompile "net.masterthought:cucumber-reporting:3.8.0"
+
 
 	// test DB
 	runtimeOnly 'com.h2database:h2'
@@ -78,9 +106,35 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 }
 
+
 test {
 	useJUnitPlatform()
+    outputs.upToDateWhen { false }
 }
+
+
+task integrationTest(type: Test) {
+    description = 'Runs integration tests.'
+    group = 'verification'
+
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+	outputs.upToDateWhen { false }
+ 
+}
+
+integrationTest {
+	useJUnitPlatform()
+	systemProperty "karate.options", System.properties.getProperty("karate.options")
+    systemProperty "karate.env", System.properties.getProperty("karate.env")
+	outputs.upToDateWhen { false }
+}
+
+task karateDebug(type: JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    main = 'com.intuit.karate.cli.Main'
+}
+
 
 
 genRest{
