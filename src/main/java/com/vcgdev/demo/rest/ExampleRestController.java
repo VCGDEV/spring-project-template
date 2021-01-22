@@ -17,7 +17,7 @@ public class ExampleRestController {
     
     
     @GetMapping
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("permitAll()")
     public HttpEntity<Map<String, String>> securedGreeting() {
         Map<String, String> greetings = new HashMap<>();
         greetings.put("greeting", "Hi, from secured endpoint");
