@@ -12,7 +12,7 @@ public class WebSecurityConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.antMatcher("/**").authorizeRequests()
-                .antMatchers("/error**")
+                .antMatchers("/error**", "/greeting")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
