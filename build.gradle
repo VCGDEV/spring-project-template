@@ -127,6 +127,7 @@ integrationTest {
 	useJUnitPlatform()
 	systemProperty "karate.options", System.properties.getProperty("karate.options")
     systemProperty "karate.env", System.properties.getProperty("karate.env")
+	systemProperty "url", project.findProperty("url")
 	outputs.upToDateWhen { false }
 }
 
