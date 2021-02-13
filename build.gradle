@@ -83,7 +83,7 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 	
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'    
-	compile 'com.vcgdev.common:common-rest:0.0.2'
+	compile 'com.vcgdev.common:common-rest:0.0.3'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
