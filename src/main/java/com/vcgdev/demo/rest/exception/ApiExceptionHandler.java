@@ -25,15 +25,15 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     
     @ExceptionHandler(ServiceException.class)
-	public ResponseEntity<ApiError> handleCatalogException(ServiceException exception) {
+	public ResponseEntity<ApiError> handleServiceException(ServiceException exception) {
 		ApiError apiError = new ApiError(exception.getCode());
 		apiError.setErrors(exception.getErrors());
-		HttpStatus status = HttpStatus.valueOf(exception.getCode().getCode());
+		HttpStatus status = HttpStatus.valueOf(Integer.parseInt(apiError.getCode()));
 		return new ResponseEntity<>(apiError, status);
 	}
 	
 	@ExceptionHandler(ConstraintViolationException.class)
-	public ResponseEntity<ApiError> handleConstriaingViolation(ConstraintViolationException cve) {
+	public ResponseEntity<ApiError> handleConstraintViolation(ConstraintViolationException cve) {
 		ApiError apiError = new ApiError(ErrorCode.BAD_REQUEST);
 		Set<ConstraintViolation<?>> violations = cve.getConstraintViolations();
 		for(ConstraintViolation cv : violations) {
