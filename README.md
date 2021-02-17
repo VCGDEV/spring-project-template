@@ -8,7 +8,7 @@ There are some configurat you need to add to local environment before runnin g t
 
 
 - Add `artifactory_user` & `artifactory_password` as environment variable environmet variable
--Run SQL scripts to load
+- Run SQL scripts to load
 
 database, you can get a copy from administrator
 
