@@ -28,3 +28,10 @@ spring:
                 dialect: org.hibernate.dialect.PostgreSQLDialect
                 format_sql: true
                 default_schema: ${DS_SCHEMA:test_schema}
+
+com:
+    vcgdev:
+        crypto:
+            pwd: test-pwd
+            saltString: salt-test
+            ivSpec: ZNJpc2QM76o+DrCWowWPtw==
