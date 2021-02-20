@@ -36,7 +36,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<ApiError> handleConstraintViolation(ConstraintViolationException cve) {
 		ApiError apiError = new ApiError(ErrorCode.BAD_REQUEST);
 		Set<ConstraintViolation<?>> violations = cve.getConstraintViolations();
-		for(ConstraintViolation cv : violations) {
+		for(ConstraintViolation<?> cv : violations) {
 			ValidationError customError = ValidationError.parse(cv.getMessage());
 			if(customError != null) {
 				apiError.addError(new ErrorDetail(customError.getCode(), customError.getMessage()));
