@@ -30,6 +30,26 @@ From a terminal:
 $ ./gradlew bootRun -- args='-- spring.profiles.active=dev'
 ```
 
+#### Running using Docker
+You need to install docker in your local machine
+
+```
+$ ./gradlew clean build
+$ docker build -t myapp/spring-example .
+$ docker run -d -p 8080:8082 myapp/spring-example --spring.profiles.active=dev --DS_DB_URL=jdbc:postgresql://host.docker.internal:5432/example --server.port=8082
+```
+
+In docker run we are mapping from 8082 to 8080 port so after running `docker run` you should be able to access to:
+
+http://localhost:8080/example-demo/app/greeting
+
+and thre mock response will be shown
+
+```
+{
+   "greeting": "Hi, from secured endpoint"
+}
+```
 
 ## Running the tests
 
