@@ -1,7 +1,6 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:11
 VOLUME /tmp
 COPY run.sh .
-ARG JAR_FILE
-COPY ${JAR_FILE} app.jar
+COPY build/libs/*.jar app.jar
 RUN chmod 777 run.sh
-ENTRYPOINT ["./run.sh"]
+ENTRYPOINT ["sh", "./run.sh"]
