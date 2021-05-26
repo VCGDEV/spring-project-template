@@ -19,5 +19,16 @@ public class AuthenticationFacade implements IAuthenticationFacade {
     public Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
+
+    @Override
+    public boolean isUserInRole(String role) {
+        try {
+            return getAuthentication().getAuthorities()
+                .stream()
+                .anyMatch(authority -> authority.getAuthority().equals(role));
+        } catch (Exception e) {
+                return false;
+        }
+    }
     
 }
