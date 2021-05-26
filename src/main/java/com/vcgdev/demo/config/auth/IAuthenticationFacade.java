@@ -5,4 +5,5 @@ import org.springframework.security.core.Authentication;
 public interface IAuthenticationFacade {
     String getAuthenticatedUser();
     Authentication getAuthentication();
+    boolean isUserInRole(String role);
 }
