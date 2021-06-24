@@ -12,12 +12,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("greeting")
+@RequestMapping("greetings")
 public class ExampleRestController {
     
     
-    @GetMapping
+    @GetMapping("/unsecure")
     @PreAuthorize("permitAll()")
+    public HttpEntity<Map<String, String>> unsecuredGreeting() {
+        Map<String, String> greetings = new HashMap<>();
+        greetings.put("greeting", "Hi, from unsecured endpoint");
+        return new ResponseEntity<>(greetings, HttpStatus.OK);
+    }
+
+    @GetMapping("/secured")
+    @PreAuthorize("isAuthenticated()")
     public HttpEntity<Map<String, String>> securedGreeting() {
         Map<String, String> greetings = new HashMap<>();
         greetings.put("greeting", "Hi, from secured endpoint");

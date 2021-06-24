@@ -5,7 +5,7 @@ server:
 
 spring:
   profiles:
-    active: ${ACTIVE_PROFILE}
+    active: ${ACTIVE_PROFILE:dev}
   jackson:
-    default-property-inclusion: non-null
+    default-property-inclusion: non-empty
 
