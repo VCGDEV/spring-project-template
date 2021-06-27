@@ -1,0 +1,42 @@
+- refactor exception handling
+- add test for unsecure endpoint
+- add oauth2 client for internal calls
+- update repository url
+- add new method to review if user has role/authority
+- add instructions to run docker
+- update docker configurations
+- update REST api plugin generator
+- fix warning due to generic
+- add crypto service to configurations
+- add rest template interceptor
+- update description from readme
+- update library version and add test to exception handler
+- add exception handling in rest layer
+- update common rest library
+- add swagger configuration
+- add security context handler
+- Se agrega README a proyecto
+- remove code analyze job
+- add url configs for karate testing
+- add url configs for karate testing
+- add integration testing for example controller
+- add configurations to run karate integration testing
+- enable CSRF in security config
+- add code analyzer to checks
+- update jdk version for action
+- update action directory
+- update build job action
+- add action to review build and code coverage
+- add testing to example controller
+- add jacoco configurations
+- fix table name
+- add domain example
+- add DB configurations
+- update plugin configs and lombok, mapstruct libraries
+- add security configurations
+- add test db configurations
+- add common-rest library
+- add swagger and lomok configs
+- add mapstruct dependencies
+- add Docker configurations
+- Initial commit

@@ -11,7 +11,7 @@ buildscript {
    }
 
    dependencies {
-      classpath('com.vcgdev.plugin:rapi-generator:1.3.4-SNAPSHOT')
+      classpath('com.vcgdev.plugin:rapi-generator:1.3.5-RELEASE')
    }
 }
 
@@ -152,11 +152,14 @@ genRest{
 // exclude from report
 def jacocoExclude = ['com/vcgdev/demo/domain/**',
 					 'com/vcgdev/demo/config/**',
-					 'com/vcgdev/demo/SpringProjectTemplateApplication**']
+					 'com/vcgdev/demo/mappers/**',
+					 'com/vcgdev/demo/SpringProjectTemplateApplication**'
+					 ]
 
 // exclude from verification
 def jacocoExcludeVerification = ['com.vcgdev.demo.domain.**',
 								 'com.vcgdev.demo.config.**',
+								 'com.vcgdev.demo.mappers.**',
 								 'com.vcgdev.demo.SpringProjectTemplateApplication**']
 jacoco {
 	toolVersion = '0.8.5'
@@ -194,7 +197,7 @@ jacocoTestCoverageVerification {
 		
 		rule {
 			element = 'CLASS'
-			includes = ['com.vcgdev.demo*']
+			includes = ['com.vcgdev.demo.*']
 			excludes = jacocoExcludeVerification
 			limit {
 				counter = 'BRANCH'
