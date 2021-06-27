@@ -36,13 +36,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<ApiError> handleConstraintViolation(ConstraintViolationException cve) {
 		ApiError apiError = new ApiError(ErrorCode.BAD_REQUEST);
 		Set<ConstraintViolation<?>> violations = cve.getConstraintViolations();
-		for(ConstraintViolation<?> cv : violations) {
-			ValidationError customError = ValidationError.parse(cv.getMessage());
-			if(customError != null) {
-				apiError.addError(new ErrorDetail(customError.getCode(), customError.getMessage()));
-			}
-		}
-		Collections.sort(apiError.getErrors(), (e1, e2) -> e1.getCode().compareTo(e2.getCode()));
+		
+		violations.stream()
+			.forEach(cv-> addError(ValidationError.parse(cv.getMessage()), apiError));
+		
+		sortApiErrors(apiError);
 		return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
 	}
 
@@ -54,14 +52,22 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		WebRequest request) {
 		
 		ApiError apiError = new ApiError(ErrorCode.BAD_REQUEST);
-
-		for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-			ValidationError customError = ValidationError.parse(error.getDefaultMessage());
-			if(customError != null) {
-				apiError.addError(new ErrorDetail(customError.getCode(), customError.getMessage()));
-			}
-		}
-		Collections.sort(apiError.getErrors(), (e1, e2) -> e1.getCode().compareTo(e2.getCode()));
+		
+		ex.getBindingResult().getFieldErrors()
+			.stream()
+			.forEach(error -> addError(ValidationError.parse(error.getDefaultMessage()), apiError));
+		sortApiErrors(apiError);
+		
 		return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+	}
+	
+	private void sortApiErrors(ApiError error) {
+		Collections.sort(error.getErrors(), (e1, e2) -> e1.getCode().compareTo(e2.getCode()));
+	}
+	
+	private void addError(ValidationError customError, ApiError apiError) {
+		if(customError != null) {
+			apiError.addError(new ErrorDetail(customError.getCode(), customError.getMessage()));
+		}
 	}
 }
