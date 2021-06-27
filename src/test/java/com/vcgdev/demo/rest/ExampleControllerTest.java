@@ -24,4 +24,13 @@ public class ExampleControllerTest {
         assertEquals("Hi, from secured endpoint", greetins.get("greeting"));
     }
     
+    
+    @Test
+    public void greetings_Unsecure() {
+    	securedGreeting = controller.unsecuredGreeting();
+        assertNotNull(securedGreeting.getBody());
+
+        Map<String, String> greetins = securedGreeting.getBody();
+        assertEquals("Hi, from unsecured endpoint", greetins.get("greeting"));
+    }
 }
